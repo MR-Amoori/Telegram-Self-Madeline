@@ -1,6 +1,21 @@
 ﻿<?php
 require_once 'madeline.php';
 
+// تابع تبدیل تاریخ میلادی به شمسی
+function gregorian_to_jalali($gy, $gm, $gd) {
+    $g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    $gy2 = ($gm > 2) ? ($gy + 1) : $gy;
+    $days = 355666 + (365 * $gy) + (int)(($gy2 + 3) / 4) - (int)(($gy2 + 99) / 100) + (int)(($gy2 + 399) / 400) + $gd + $g_d_m[$gm - 1];
+    $jy = -1595 + 33 * (int)($days / 12053);
+    $days %= 12053;
+    $jy += 4 * (int)($days / 1461);
+    $days %= 1461;
+    if ($days > 365) { $jy += (int)(($days - 1) / 365); $days = ($days - 1) % 365; }
+    if ($days < 186) { $jm = 1 + (int)($days / 31); $jd = 1 + ($days % 31); }
+    else { $jm = 7 + (int)(($days - 186) / 30); $jd = 1 + (($days - 186) % 30); }
+    return [$jy, $jm, $jd];
+}
+
 $settings = new \danog\MadelineProto\Settings();
 $settings->getLogger()->setLevel(0); 
 
@@ -8,15 +23,29 @@ $MadelineProto = new \danog\MadelineProto\API('session.madeline', $settings);
 $MadelineProto->start();
 
 date_default_timezone_set('Asia/Tehran');
-$time = date("H:i");
 
+// تنظیم نام
+$time_name = date("H-i");
 $en_nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-$custom_nums = ['𝟎', '𝟏', '𝟐', '𝟑', '𝟒', '𝟓', '𝟔', '𝟕', '𝟖', '𝟗'];
-$custom_time = str_replace($en_nums, $custom_nums, $time);
+$super_nums = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
+$custom_time_name = str_replace($en_nums, $super_nums, $time_name);
+$first_name = "•|𝒎𝒐𝒉𝒂𝒎𝒎𝒂𝒅 𝒓𝒆𝒛𝒂|• " . $custom_time_name;
+
+// تنظیم بیو
+$bio_time = date("g:i A");
+$gregorian_date = date("d/n/y");
+
+list($jy, $jm, $jd) = gregorian_to_jalali(date('Y'), date('m'), date('d'));
+$jalali_date = "$jy/$jm/$jd";
+$fa_nums = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+$jalali_date_fa = str_replace($en_nums, $fa_nums, $jalali_date);
+
+$bio = "<mramoori.ir/>\n$bio_time | $gregorian_date | $jalali_date_fa";
 
 $MadelineProto->account->updateProfile([
-    'first_name' => "($custom_time) •|𝒎𝒐𝒉𝒂𝒎𝒎𝒂𝒅 𝒓𝒆𝒛𝒂|•"
+    'first_name' => $first_name,
+    'about' => $bio
 ]);
 
-echo "OK: $time";
+echo "OK";
 ?>
