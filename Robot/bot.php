@@ -1,7 +1,6 @@
 ﻿<?php
 require_once 'madeline.php';
 
-// تابع تبدیل تاریخ میلادی به شمسی
 function gregorian_to_jalali($gy, $gm, $gd) {
     $g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
     $gy2 = ($gm > 2) ? ($gy + 1) : $gy;
@@ -19,19 +18,21 @@ function gregorian_to_jalali($gy, $gm, $gd) {
 $settings = new \danog\MadelineProto\Settings();
 $settings->getLogger()->setLevel(0); 
 
+// قرار دادن مستقیم API برای جلوگیری از خطا
+$settings->getAppInfo()->setApiId(/*ApiId*/);
+$settings->getAppInfo()->setApiHash(/*ApiHash*/);
+
 $MadelineProto = new \danog\MadelineProto\API('session.madeline', $settings);
 $MadelineProto->start();
 
 date_default_timezone_set('Asia/Tehran');
 
-// تنظیم نام
 $time_name = date("H-i");
 $en_nums = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 $super_nums = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
 $custom_time_name = str_replace($en_nums, $super_nums, $time_name);
 $first_name = "•|𝒎𝒐𝒉𝒂𝒎𝒎𝒂𝒅 𝒓𝒆𝒛𝒂|• " . $custom_time_name;
 
-// تنظیم بیو
 $bio_time = date("g:i A");
 $gregorian_date = date("d/n/y");
 
