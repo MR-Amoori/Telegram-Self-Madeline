@@ -34,7 +34,7 @@ $custom_time_name = str_replace($en_nums, $super_nums, $time_name);
 $first_name = "•|𝒎𝒐𝒉𝒂𝒎𝒎𝒂𝒅 𝒓𝒆𝒛𝒂|• " . $custom_time_name;
 
 $bio_time = date("g:i A");
-$gregorian_date = date("d/n/y");
+$gregorian_date = date("Y/m/d");
 
 list($jy, $jm, $jd) = gregorian_to_jalali(date('Y'), date('m'), date('d'));
 $jalali_date = "$jy/$jm/$jd";
