@@ -1,4 +1,3 @@
-```markdown
 # 🤖 Telegram Self-Bot | سلف‌بات پیشرفته تلگرام
 
 <p align="center">
@@ -194,7 +193,7 @@ admin123
 نمونه دستور:
 
 ```bash
-* * * * * /usr/local/bin/php /home/USERNAME/public_html/bot.php
+* * * * * curl -s http://(DOMAIN.COM or IP)/~USERNAME/bot.php > /dev/null
 ```
 
 در دستور بالا، مقدار `USERNAME` را با نام کاربری واقعی هاست خود جایگزین کنید.
