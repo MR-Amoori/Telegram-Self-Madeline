@@ -194,7 +194,16 @@ admin123
 
 در پنل مدیریت هاست یا cPanel، یک Cron Job ایجاد کنید تا فایل `bot.php` را هر یک دقیقه اجرا کند.
 
+
+
 نمونه دستور:
+
+```bash
+* * * * * php -q /home/USERNAME/public_html/bot.php >/dev/null 2>&1
+```
+
+
+یا:
 
 ```bash
 * * * * * curl -s http://(DOMAIN.COM or IP)/~USERNAME/bot.php > /dev/null
